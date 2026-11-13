@@ -1,6 +1,24 @@
+import jwt from "jsonwebtoken";
 import type { Response } from "express";
 
-const generateToken = (res: Response, token: string) => {
+interface TokenPayload {
+  userId: string;
+  role: "student" | "admin";
+}
+
+export const generateToken = (payload: TokenPayload): string => {
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    throw new Error("JWT_SECRET is missing");
+  }
+
+  return jwt.sign(payload, secret, {
+    expiresIn: "7d",
+  });
+};
+
+export const setTokenCookie = (res: Response, token: string): void => {
   const isProduction = process.env.NODE_ENV === "production";
 
   res.cookie("token", token, {
@@ -11,5 +29,3 @@ const generateToken = (res: Response, token: string) => {
     path: "/",
   });
 };
-
-export default generateToken;
