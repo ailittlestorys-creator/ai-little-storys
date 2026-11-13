@@ -20,9 +20,15 @@ const app = express();
 app.use(helmet());
 
 // 2. CORS
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ai-little-storys.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "https://ai-little-storys.vercel.app/",
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
