@@ -1,0 +1,154 @@
+.student-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 30px;
+  color: #172033;
+  margin-bottom: 8px;
+}
+
+.dashboard-header p {
+  color: #64748b;
+}
+
+.course-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.enrolled-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.enrolled-course-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.enrolled-course-card:hover {
+  transform: translateY(-4px);
+}
+
+.enrolled-course-card > img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.enrolled-course-content {
+  padding: 18px;
+}
+
+.lifetime-badge {
+  display: inline-block;
+  background: #dcfce7;
+  color: #15803d;
+  padding: 5px 9px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.enrolled-course-content h3 {
+  margin: 14px 0 8px;
+  font-size: 19px;
+}
+
+.enrolled-course-content > p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.enrolled-course-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.enrolled-course-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.continue-learning-btn,
+.browse-courses-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.empty-dashboard {
+  text-align: center;
+  padding: 80px 20px;
+  color: #64748b;
+}
+
+.empty-dashboard h2 {
+  color: #172033;
+  margin: 20px 0 10px;
+}
+
+.empty-dashboard p {
+  margin-bottom: 25px;
+}
+
+.browse-courses-btn {
+  width: fit-content;
+  margin: auto;
+}
+
+.dashboard-loading {
+  padding: 80px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dashboard-header h1 {
+    font-size: 25px;
+  }
+}

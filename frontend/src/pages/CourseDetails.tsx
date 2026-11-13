@@ -1,0 +1,216 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import BuyNowButton from "../components/BuyNowButton";
+import {
+  BookOpen,
+  Clock,
+  PlayCircle,
+  Lock,
+  Globe,
+  BarChart3,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import toast from "react-hot-toast";
+
+import api from "../services/api";
+import type {
+  StudentCourseResponse,
+  StudentModule,
+} from "../types/studentCourse";
+
+import "../styles/course-details.css";
+
+const formatDuration = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+
+  if (minutes < 60) return `${minutes} min`;
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  return remainingMinutes
+    ? `${hours} hr ${remainingMinutes} min`
+    : `${hours} hr`;
+};
+
+export default function CourseDetails() {
+  const { slug } = useParams<{ slug: string }>();
+
+  const [data, setData] = useState<StudentCourseResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [expandedModules, setExpandedModules] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        setLoading(true);
+
+        const response = await api.get<StudentCourseResponse>(
+          `/student/courses/${slug}`,
+        );
+
+        setData(response.data);
+
+        if (response.data.curriculum.length > 0) {
+          setExpandedModules([response.data.curriculum[0]._id]);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load course");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (slug) fetchCourse();
+  }, [slug]);
+
+  const toggleModule = (moduleId: string) => {
+    setExpandedModules((previous) =>
+      previous.includes(moduleId)
+        ? previous.filter((id) => id !== moduleId)
+        : [...previous, moduleId],
+    );
+  };
+
+  if (loading) {
+    return <div className="course-loading">Loading course...</div>;
+  }
+
+  if (!data?.course) {
+    return (
+      <div className="course-not-found">
+        <h2>Course not found</h2>
+        <Link to="/courses">Browse Courses</Link>
+      </div>
+    );
+  }
+
+  const { course, curriculum, stats } = data;
+
+  return (
+    <div className="course-details-page">
+      <section className="course-hero">
+        <div className="course-hero-content">
+          <Link to="/courses" className="back-link">
+            ← All Courses
+          </Link>
+
+          <h1>{course.title}</h1>
+
+          <p>{course.description}</p>
+
+          <div className="course-meta">
+            <span>
+              <Globe size={17} />
+              {course.language}
+            </span>
+
+            <span>
+              <BarChart3 size={17} />
+              {course.level}
+            </span>
+
+            <span>
+              <BookOpen size={17} />
+              {stats.totalLessons} Lessons
+            </span>
+
+            <span>
+              <Clock size={17} />
+              {formatDuration(stats.totalDuration)}
+            </span>
+          </div>
+        </div>
+
+        <div className="course-purchase-card">
+          <img
+            src={course.thumbnail || "/placeholder-course.jpg"}
+            alt={course.title}
+          />
+
+          <div className="purchase-price">
+            <strong>₹{course.price}</strong>
+
+            {course.originalPrice && course.originalPrice > course.price && (
+              <del>₹{course.originalPrice}</del>
+            )}
+          </div>
+
+          <BuyNowButton courseId={course._id} courseTitle={course.title} />
+
+          <p>One-time payment · Lifetime access</p>
+        </div>
+      </section>
+
+      <section className="curriculum-section">
+        <h2>Course Curriculum</h2>
+
+        <p className="curriculum-summary">
+          {stats.totalModules} Modules · {stats.totalLessons} Lessons ·{" "}
+          {formatDuration(stats.totalDuration)}
+        </p>
+
+        {curriculum.length === 0 ? (
+          <p>No lessons available yet.</p>
+        ) : (
+          <div className="curriculum-list">
+            {curriculum.map((module: StudentModule, index) => {
+              const isExpanded = expandedModules.includes(module._id);
+
+              return (
+                <div className="curriculum-module" key={module._id}>
+                  <button
+                    className="module-heading"
+                    onClick={() => toggleModule(module._id)}
+                  >
+                    <div>
+                      <strong>
+                        Module {index + 1}: {module.title}
+                      </strong>
+
+                      <small>{module.lessons.length} Lessons</small>
+                    </div>
+
+                    {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                  </button>
+
+                  {isExpanded && (
+                    <div className="module-lessons">
+                      {module.lessons.map((lesson) => (
+                        <div className="curriculum-lesson" key={lesson._id}>
+                          <div className="lesson-name">
+                            {lesson.isPreview ? (
+                              <PlayCircle size={19} />
+                            ) : (
+                              <Lock size={18} />
+                            )}
+
+                            <span>{lesson.title}</span>
+                          </div>
+
+                          <div className="lesson-info">
+                            {lesson.isPreview && (
+                              <span className="preview-label">
+                                Free Preview
+                              </span>
+                            )}
+
+                            <small>
+                              {formatDuration(lesson.duration || 0)}
+                            </small>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
