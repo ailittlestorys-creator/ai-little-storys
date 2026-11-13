@@ -8,8 +8,9 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true
   },
-  "include": ["src", "test-cloudinary.js"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

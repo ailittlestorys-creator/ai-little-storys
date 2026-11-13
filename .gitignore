@@ -1,5 +1,11 @@
+
 node_modules/
+dist/
+build/
 .env
 .env.*
 !.env.example
-dist/
+*.log
+coverage/
+.DS_Store
+.vscode/
