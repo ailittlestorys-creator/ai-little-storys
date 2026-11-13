@@ -19,19 +19,26 @@ function Login() {
     try {
       setLoading(true);
 
-      const response = await api.post("/auth/login", {
+      await api.post("/auth/login", {
         email,
         password,
       });
 
-      await refreshUser();
+      const currentUser = await refreshUser();
+
+      if (!currentUser) {
+        toast.error(
+          "Login succeeded, but session could not be established. Please check browser cookies.",
+        );
+        return;
+      }
 
       toast.success("Login successful!");
 
-      if (response.data.user.role === "admin") {
-        navigate("/admin");
+      if (currentUser.role === "admin") {
+        navigate("/admin", { replace: true });
       } else {
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Login failed");

@@ -18,7 +18,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  refreshUser: () => Promise<void>;
+  refreshUser: () => Promise<User | null>;
   logout: () => Promise<void>;
 }
 
@@ -28,12 +28,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const refreshUser = async () => {
+  const refreshUser = async (): Promise<User | null> => {
     try {
       const response = await api.get("/auth/me");
-      setUser(response.data.user);
-    } catch {
+
+      const currentUser: User = response.data.user;
+
+      setUser(currentUser);
+
+      return currentUser;
+    } catch (error) {
+      console.error("Refresh user failed:", error);
+
       setUser(null);
+
+      return null;
     } finally {
       setLoading(false);
     }
@@ -48,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    refreshUser();
+    void refreshUser();
   }, []);
 
   return (

@@ -22,7 +22,7 @@ app.use(helmet());
 // 2. CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://ai-little-storys.vercel.app/",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -47,6 +47,8 @@ app.post(
 
 // 5. Normal Body Parser
 app.use(express.json({ limit: "1mb" }));
+
+app.set("trust proxy", 1);
 
 // 6. Cookie Parser
 app.use(cookieParser());
