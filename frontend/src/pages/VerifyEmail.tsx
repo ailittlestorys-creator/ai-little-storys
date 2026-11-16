@@ -14,7 +14,7 @@ function VerifyEmail() {
 
   const { refreshUser } = useAuth();
 
-  const [email, setEmail] = useState(location.state?.email || "");
+  const [email] = useState(location.state?.email || "");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
