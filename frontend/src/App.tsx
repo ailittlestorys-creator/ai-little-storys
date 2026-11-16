@@ -22,6 +22,8 @@ import AddCourse from "./admin/AddCourse";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Footer from "./components/Footer";
+import Contact from "./pages/Contact";
 function App() {
   return (
     <AuthProvider>
@@ -40,6 +42,7 @@ function App() {
           <Route path="/courses/:slug" element={<CourseDetails />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Student Pages */}
           <Route element={<ProtectedRoute />}>
@@ -64,6 +67,7 @@ function App() {
             />
           </Route>
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );

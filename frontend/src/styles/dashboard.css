@@ -222,3 +222,83 @@
     justify-content: flex-start;
   }
 }
+
+/* STUDENT PROFILE / WELCOME SECTION */
+
+.dashboard-welcome {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px;
+  margin-bottom: 30px;
+  border: 1px solid #e0e7ff;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #eef2ff, #f5f3ff);
+}
+
+.welcome-avatar {
+  width: 68px;
+  height: 68px;
+  min-width: 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #ffffff;
+}
+
+.welcome-content {
+  min-width: 0;
+}
+
+.welcome-content > span {
+  color: #4f46e5;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+}
+
+.welcome-content h1 {
+  margin: 7px 0;
+  color: #172033;
+  font-size: 27px;
+  font-weight: 750;
+}
+
+.welcome-email {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #64748b;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.welcome-email svg {
+  flex-shrink: 0;
+  color: #4f46e5;
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+  .dashboard-welcome {
+    gap: 13px;
+    padding: 20px 15px;
+  }
+
+  .welcome-avatar {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 14px;
+  }
+
+  .welcome-content h1 {
+    font-size: 20px;
+  }
+
+  .welcome-email {
+    font-size: 12px;
+  }
+}

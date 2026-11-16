@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BookOpen, Clock, PlayCircle } from "lucide-react";
+import { BookOpen, Clock, PlayCircle, User, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import type { EnrolledCourse, MyCoursesResponse } from "../types/enrollment";
 
 import "../styles/dashboard.css";
 
 export default function Dashboard() {
+  const { user } = useAuth();
+
   const [courses, setCourses] = useState<EnrolledCourse[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,6 +40,27 @@ export default function Dashboard() {
 
   return (
     <div className="student-dashboard">
+      {/* STUDENT PROFILE / WELCOME SECTION */}
+
+      <section className="dashboard-welcome">
+        <div className="welcome-avatar">
+          <User size={30} />
+        </div>
+
+        <div className="welcome-content">
+          <span>STUDENT DASHBOARD</span>
+
+          <h1>Welcome, {user?.name || "Student"}!</h1>
+
+          <div className="welcome-email">
+            <Mail size={16} />
+            <span>{user?.email || "Email not available"}</span>
+          </div>
+        </div>
+      </section>
+
+      {/* DASHBOARD HEADER */}
+
       <div className="dashboard-header">
         <div>
           <h1>My Learning Dashboard</h1>
@@ -48,6 +72,8 @@ export default function Dashboard() {
           {courses.length} Purchased Courses
         </span>
       </div>
+
+      {/* EMPTY STATE */}
 
       {courses.length === 0 ? (
         <div className="empty-dashboard">
@@ -65,6 +91,8 @@ export default function Dashboard() {
           </Link>
         </div>
       ) : (
+        /* ENROLLED COURSES */
+
         <div className="enrolled-courses-grid">
           {courses.map(({ enrollmentId, enrolledAt, course }) => (
             <div className="enrolled-course-card" key={enrollmentId}>

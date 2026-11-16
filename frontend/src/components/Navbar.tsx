@@ -35,6 +35,7 @@ function Navbar() {
             <Link to={user.role === "admin" ? "/admin" : "/dashboard"}>
               Dashboard
             </Link>
+            <Link to="/contact">Contact Us</Link>
 
             <button className="nav-button" onClick={handleLogout}>
               Logout
