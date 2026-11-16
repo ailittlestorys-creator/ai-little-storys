@@ -9,4 +9,5 @@ export interface Course {
   language: string;
   level: string;
   isPublished: boolean;
+  purchaseCount: number;
 }

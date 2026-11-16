@@ -1,0 +1,267 @@
+/* ========================================
+   ADMIN STUDENTS PAGE
+======================================== */
+
+.admin-students-page {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ========================================
+   STUDENT STATISTICS
+======================================== */
+
+.student-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.student-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border-color, #e5e5e5);
+  border-radius: 10px;
+  background: var(--card-bg, #fff);
+}
+
+.student-stat-card > div {
+  min-width: 0;
+}
+
+.student-stat-card span {
+  color: var(--text-secondary, #777);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.student-stat-card h2 {
+  margin: 5px 0 0;
+  font-size: 26px;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   STUDENT TABS
+======================================== */
+
+.student-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 24px 0 18px;
+  border-bottom: 1px solid var(--border-color, #ddd);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.student-tabs button {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.student-tabs button.active {
+  border-bottom-color: var(--primary-color, #555);
+}
+
+/* ========================================
+   STUDENT TOOLBAR
+======================================== */
+
+.student-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.student-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  min-width: 0;
+  padding: 10px 13px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+}
+
+.student-search input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.copy-all-emails-button,
+.student-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.copy-all-emails-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   STUDENT TABLE
+======================================== */
+
+.student-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 10px;
+}
+
+.student-table {
+  width: 100%;
+  min-width: 650px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.student-table th,
+.student-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.student-table th {
+  background: var(--table-header-bg, #f5f5f5);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.student-table td {
+  font-size: 14px;
+}
+
+.student-empty {
+  padding: 30px !important;
+  text-align: center;
+  color: var(--text-secondary, #777);
+}
+
+.student-results-count {
+  margin-top: 14px;
+  color: var(--text-secondary, #777);
+  font-size: 13px;
+}
+
+/* ========================================
+   TABLET RESPONSIVE
+======================================== */
+
+@media (max-width: 900px) {
+  .student-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .student-stat-card {
+    padding: 17px;
+  }
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+======================================== */
+
+@media (max-width: 700px) {
+  .student-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .student-stat-card {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .student-stat-card h2 {
+    font-size: 22px;
+  }
+
+  .student-stat-card span {
+    font-size: 12px;
+  }
+
+  .student-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .student-search {
+    max-width: none;
+    box-sizing: border-box;
+  }
+
+  .copy-all-emails-button {
+    width: 100%;
+  }
+
+  .student-tabs {
+    gap: 5px;
+    margin: 18px 0;
+  }
+
+  .student-tabs button {
+    padding: 11px 13px;
+    font-size: 14px;
+  }
+
+  .student-table th,
+  .student-table td {
+    padding: 12px;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 380px) {
+  .student-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-stat-card {
+    padding: 15px;
+  }
+
+  .student-stat-card h2 {
+    font-size: 21px;
+  }
+
+  .student-tabs button {
+    padding: 10px;
+    font-size: 13px;
+  }
+}

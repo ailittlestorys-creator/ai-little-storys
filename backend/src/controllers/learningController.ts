@@ -5,7 +5,10 @@ import Module from "../models/Module.js";
 import Lesson from "../models/Lesson.js";
 import Enrollment from "../models/Enrollment.js";
 
-export const getLearningCourse = async (req: Request, res: Response) => {
+export const getLearningCourse = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
   try {
     const userId = req.user?.userId;
     const { slug } = req.params;
@@ -49,7 +52,7 @@ export const getLearningCourse = async (req: Request, res: Response) => {
           moduleId: module._id,
           courseId: course._id,
         })
-          .select("title description duration order isPreview")
+          .select("title description duration order isPreview prompts")
           .sort({ order: 1 })
           .lean();
 
@@ -57,15 +60,23 @@ export const getLearningCourse = async (req: Request, res: Response) => {
           _id: module._id,
           title: module.title,
           order: module.order,
-          lessons: lessons.map((lesson) => ({
-            _id: lesson._id,
-            title: lesson.title,
-            description: lesson.description,
-            duration: lesson.duration || 0,
-            order: lesson.order,
-            isPreview: lesson.isPreview,
-            isLocked: !isEnrolled && !lesson.isPreview,
-          })),
+
+          lessons: lessons.map((lesson) => {
+            const isLocked = !isEnrolled && !lesson.isPreview;
+
+            return {
+              _id: lesson._id,
+              title: lesson.title,
+              description: lesson.description,
+              duration: lesson.duration || 0,
+              order: lesson.order,
+              isPreview: lesson.isPreview,
+              isLocked,
+
+              // Never send paid lesson prompts to non-enrolled students.
+              prompts: isLocked ? [] : lesson.prompts || [],
+            };
+          }),
         };
       }),
     );

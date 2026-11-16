@@ -34,17 +34,27 @@ const formatDuration = (seconds: number) => {
     : `${hours} hr`;
 };
 
+type MyCoursesResponse = {
+  courses?: Array<{
+    _id?: string;
+    courseId?: string | { _id?: string };
+    course?: { _id?: string };
+  }>;
+};
+
 export default function CourseDetails() {
   const { slug } = useParams<{ slug: string }>();
 
   const [data, setData] = useState<StudentCourseResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const [expandedModules, setExpandedModules] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         setLoading(true);
+        setIsEnrolled(false);
 
         const response = await api.get<StudentCourseResponse>(
           `/student/courses/${slug}`,
@@ -54,6 +64,31 @@ export default function CourseDetails() {
 
         if (response.data.curriculum.length > 0) {
           setExpandedModules([response.data.curriculum[0]._id]);
+        }
+
+        // Check whether the logged-in student purchased this course
+        try {
+          const myCoursesResponse = await api.get<MyCoursesResponse>(
+            "/student/courses/my-courses",
+          );
+
+          const courses = myCoursesResponse.data.courses || [];
+
+          const purchased = courses.some((item) => {
+            const courseId =
+              item.course?._id ||
+              (typeof item.courseId === "object"
+                ? item.courseId?._id
+                : item.courseId) ||
+              item._id;
+
+            return courseId === response.data.course._id;
+          });
+
+          setIsEnrolled(purchased);
+        } catch {
+          // Not logged in or no access to my-courses
+          setIsEnrolled(false);
         }
       } catch (error) {
         console.error(error);
@@ -130,17 +165,40 @@ export default function CourseDetails() {
             alt={course.title}
           />
 
-          <div className="purchase-price">
-            <strong>₹{course.price}</strong>
+          {isEnrolled ? (
+            <div className="enrolled-course-action">
+              <p className="enrolled-message">You already own this course.</p>
 
-            {course.originalPrice && course.originalPrice > course.price && (
-              <del>₹{course.originalPrice}</del>
-            )}
-          </div>
+              <Link
+                to={`/learn/courses/${course.slug}`}
+                className="start-learning-button"
+              >
+                <PlayCircle size={19} />
+                Start Learning
+              </Link>
 
-          <BuyNowButton courseId={course._id} courseTitle={course.title} />
+              <p>Lifetime access</p>
+            </div>
+          ) : (
+            <>
+              <div className="purchase-price">
+                <strong>₹{course.price}</strong>
 
-          <p>One-time payment · Lifetime access</p>
+                {course.originalPrice &&
+                  course.originalPrice > course.price && (
+                    <del>₹{course.originalPrice}</del>
+                  )}
+              </div>
+
+              <BuyNowButton
+                courseId={course._id}
+                courseTitle={course.title}
+                courseSlug={course.slug}
+              />
+
+              <p>One-time payment · Lifetime access</p>
+            </>
+          )}
         </div>
       </section>
 

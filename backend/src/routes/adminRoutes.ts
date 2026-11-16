@@ -6,6 +6,7 @@ import {
   updateCourse,
   deleteCourse,
   getDashboardStats,
+  getStudentEmailLists,
 } from "../controllers/adminController.js";
 
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
@@ -18,6 +19,9 @@ router.use(protect, adminOnly);
 router.get("/stats", getDashboardStats);
 
 router.get("/courses", getAdminCourses);
+
+// STUDENT EMAIL LISTS
+router.get("/students/emails", getStudentEmailLists);
 
 router.post("/courses", createCourse);
 

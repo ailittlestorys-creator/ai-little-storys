@@ -1,7 +1,0 @@
-ailittlestorys2_db_user
-3CYTqfMzQ1yrnebN
-mongodb+srv://<db_username>:<db_password>@ai-little-storys.agw0szo.mongodb.net/
-
-
-rzp_test_TytdEltFMdGX7U
-hKtvBDsWUo7OgW9oVUjROZxk

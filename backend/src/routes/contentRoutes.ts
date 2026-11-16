@@ -12,6 +12,7 @@ import {
 import {
   createLesson,
   getModuleLessons,
+  updateLesson,
   deleteLesson,
   playLesson,
 } from "../controllers/lessonController.js";
@@ -41,6 +42,8 @@ router.get(
   adminOnly,
   getModuleLessons,
 );
+
+router.put("/lessons/:lessonId", protect, adminOnly, updateLesson);
 
 router.delete("/lessons/:lessonId", protect, adminOnly, deleteLesson);
 

@@ -4,6 +4,7 @@ import type { Response } from "express";
 interface TokenPayload {
   userId: string;
   role: "student" | "admin";
+  tokenVersion: number;
 }
 
 export const generateToken = (payload: TokenPayload): string => {

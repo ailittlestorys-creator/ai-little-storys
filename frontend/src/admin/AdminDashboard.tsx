@@ -47,6 +47,10 @@ function AdminDashboard() {
           <PlusCircle size={18} />
           Add Course
         </Link>
+        <Link to="/admin/students">
+          <Users size={18} />
+          Students
+        </Link>
       </aside>
 
       <main className="admin-main">

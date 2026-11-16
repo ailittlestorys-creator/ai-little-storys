@@ -1,0 +1,223 @@
+/* ========================================
+   LESSON PROMPTS EDITOR
+======================================== */
+
+.lesson-prompts-editor {
+  width: 100%;
+  min-width: 0;
+  margin: 20px 0;
+  padding: 18px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 10px;
+  background: var(--card-bg, #fff);
+}
+
+.lesson-prompts-editor h3 {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.lesson-prompts-editor > p {
+  margin-bottom: 15px;
+  color: var(--text-secondary, #777);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.prompt-input-item {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+}
+
+.prompt-input-item label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.prompt-input-item textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  resize: vertical;
+  box-sizing: border-box;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 7px;
+  font: inherit;
+  line-height: 1.5;
+  outline: none;
+}
+
+.prompt-input-item textarea:focus {
+  border-color: #2563eb;
+}
+
+.add-prompt-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 10px 15px;
+  border: 1px solid #555;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-prompt-button:hover {
+  background: rgba(128, 128, 128, 0.12);
+}
+
+.prompt-input-item .cancel-edit-button {
+  margin-top: 10px;
+}
+
+/* ========================================
+   ADMIN COURSE SUMMARY
+======================================== */
+
+.admin-course-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.admin-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border-color, #e5e5e5);
+  border-radius: 10px;
+  background: var(--card-bg, #fff);
+}
+
+.admin-summary-card > div {
+  min-width: 0;
+}
+
+.admin-summary-card span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary, #777);
+  line-height: 1.5;
+}
+
+.admin-summary-card h2 {
+  margin: 5px 0 0;
+  font-size: 26px;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   COURSE PURCHASE COUNT
+======================================== */
+
+.course-purchase-count {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.course-purchase-count strong {
+  font-size: 17px;
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 768px) {
+  .admin-course-summary {
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .admin-summary-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .admin-summary-card h2 {
+    font-size: 23px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+  .admin-course-summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 18px 0;
+  }
+
+  .admin-summary-card {
+    padding: 16px;
+  }
+
+  .admin-summary-card h2 {
+    font-size: 22px;
+  }
+
+  .lesson-prompts-editor {
+    padding: 14px;
+    margin: 16px 0;
+  }
+
+  .prompt-input-item {
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+
+  .prompt-input-item textarea {
+    min-height: 120px;
+    font-size: 14px;
+  }
+
+  .add-prompt-button {
+    width: 100%;
+  }
+
+  .course-purchase-count {
+    font-size: 13px;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 360px) {
+  .lesson-prompts-editor {
+    padding: 11px;
+  }
+
+  .prompt-input-item {
+    padding: 10px;
+  }
+
+  .admin-summary-card {
+    padding: 13px;
+  }
+
+  .admin-summary-card h2 {
+    font-size: 20px;
+  }
+}

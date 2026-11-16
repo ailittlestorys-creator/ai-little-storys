@@ -8,6 +8,8 @@ import {
   Clock,
   Lock,
   PlayCircle,
+  Copy,
+  FileText,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -126,6 +128,15 @@ export default function LearningPage() {
     if (lesson) loadLesson(lesson);
   };
 
+  const copyPrompt = async (prompt: string) => {
+    try {
+      await navigator.clipboard.writeText(prompt);
+      toast.success("Prompt copied!");
+    } catch {
+      toast.error("Unable to copy prompt");
+    }
+  };
+
   if (loading) {
     return <div className="learning-loading">Loading course...</div>;
   }
@@ -140,6 +151,7 @@ export default function LearningPage() {
   }
 
   const totalLessons = allLessons.length;
+  const prompts = selectedLesson?.prompts || [];
 
   return (
     <div className="learning-page">
@@ -210,6 +222,51 @@ export default function LearningPage() {
                   <ChevronRight size={18} />
                 </button>
               </div>
+            </section>
+          )}
+
+          {/* RELATED PROMPTS */}
+          {selectedLesson && (
+            <section className="related-prompts-section">
+              <div className="related-prompts-heading">
+                <div>
+                  <h2>
+                    <FileText size={21} />
+                    Related Prompts
+                  </h2>
+                  <p>Use these prompts along with this video lesson.</p>
+                </div>
+
+                <span className="prompt-count">{prompts.length} Prompts</span>
+              </div>
+
+              {prompts.length > 0 ? (
+                <div className="related-prompts-list">
+                  {prompts.map((prompt, index) => (
+                    <div className="related-prompt-card" key={index}>
+                      <div className="related-prompt-top">
+                        <strong>Prompt {index + 1}</strong>
+
+                        <button
+                          type="button"
+                          onClick={() => copyPrompt(prompt)}
+                          className="copy-prompt-button"
+                        >
+                          <Copy size={15} />
+                          Copy Prompt
+                        </button>
+                      </div>
+
+                      <p>{prompt}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-prompts-message">
+                  <FileText size={28} />
+                  <p>No prompts available for this lesson yet.</p>
+                </div>
+              )}
             </section>
           )}
 

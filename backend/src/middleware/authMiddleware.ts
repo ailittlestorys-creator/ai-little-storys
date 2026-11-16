@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import User from "../models/User.js";
 
 interface AuthPayload extends JwtPayload {
   userId: string;
   role: "student" | "admin";
+  tokenVersion: number;
 }
 
 declare global {
@@ -17,11 +19,11 @@ declare global {
   }
 }
 
-export const protect = (
+export const protect = async (
   req: Request,
   res: Response,
   next: NextFunction,
-): void => {
+): Promise<void> => {
   try {
     const token = req.cookies?.token;
 
@@ -39,12 +41,13 @@ export const protect = (
       throw new Error("JWT_SECRET is missing");
     }
 
-    const decoded = jwt.verify(token, secret) as AuthPayload;
+    const decoded = jwt.verify(token, secret);
 
     if (
       typeof decoded === "string" ||
       !decoded.userId ||
-      !["student", "admin"].includes(decoded.role)
+      !["student", "admin"].includes(decoded.role) ||
+      !Number.isInteger(decoded.tokenVersion)
     ) {
       res.status(401).json({
         success: false,
@@ -53,9 +56,33 @@ export const protect = (
       return;
     }
 
+    const payload = decoded as AuthPayload;
+
+    const user = await User.findById(payload.userId).select("+tokenVersion");
+
+    if (
+      !user ||
+      !user.isActive ||
+      user.tokenVersion !== payload.tokenVersion ||
+      user.role !== payload.role
+    ) {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        path: "/",
+      });
+
+      res.status(401).json({
+        success: false,
+        message: "Session expired. Please login again.",
+      });
+      return;
+    }
+
     req.user = {
-      userId: decoded.userId,
-      role: decoded.role,
+      userId: user._id.toString(),
+      role: user.role,
     };
 
     next();

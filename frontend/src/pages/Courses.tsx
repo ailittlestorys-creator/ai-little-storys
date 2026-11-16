@@ -67,8 +67,6 @@ export default function Courses() {
 
                 <h2>{course.title}</h2>
 
-                <p>{course.description}</p>
-
                 <div className="course-card-meta">
                   <span>{course.language}</span>
                 </div>

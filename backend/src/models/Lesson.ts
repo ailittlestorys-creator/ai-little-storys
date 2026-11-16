@@ -9,6 +9,7 @@ export interface ILesson extends Document {
   duration: number;
   order: number;
   isPreview: boolean;
+  prompts: string[];
 }
 
 const lessonSchema = new Schema<ILesson>(
@@ -56,6 +57,22 @@ const lessonSchema = new Schema<ILesson>(
     isPreview: {
       type: Boolean,
       default: false,
+    },
+
+    prompts: {
+      type: [
+        {
+          type: String,
+          trim: true,
+          maxlength: 10000,
+        },
+      ],
+      default: [],
+      validate: {
+        validator: (prompts: string[]) =>
+          prompts.every((prompt) => prompt.length > 0),
+        message: "Prompts cannot be empty",
+      },
     },
   },
   { timestamps: true },

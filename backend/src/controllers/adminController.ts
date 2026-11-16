@@ -4,6 +4,7 @@ import { z } from "zod";
 import Course from "../models/Course.js";
 import User from "../models/User.js";
 import Enrollment from "../models/Enrollment.js";
+
 const courseSchema = z.object({
   title: z.string().trim().min(3).max(150),
   slug: z
@@ -67,21 +68,46 @@ export const createCourse = async (
   }
 };
 
-// GET ALL COURSES FOR ADMIN
+// GET ALL COURSES FOR ADMIN WITH PURCHASE COUNT
 export const getAdminCourses = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const courses = await Course.find().sort({
-      createdAt: -1,
-    });
+    const [courses, purchaseCounts] = await Promise.all([
+      Course.find().sort({ createdAt: -1 }),
+
+      Enrollment.aggregate([
+        {
+          $match: {
+            status: "active",
+          },
+        },
+        {
+          $group: {
+            _id: "$courseId",
+            count: { $sum: 1 },
+          },
+        },
+      ]),
+    ]);
+
+    const purchaseCountMap = new Map<string, number>(
+      purchaseCounts.map((item) => [String(item._id), item.count]),
+    );
+
+    const coursesWithPurchaseCount = courses.map((course) => ({
+      ...course.toObject(),
+      purchaseCount: purchaseCountMap.get(String(course._id)) ?? 0,
+    }));
 
     res.status(200).json({
       success: true,
-      courses,
+      courses: coursesWithPurchaseCount,
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to fetch courses",
@@ -125,6 +151,8 @@ export const updateCourse = async (
       course,
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to update course",
@@ -148,8 +176,6 @@ export const deleteCourse = async (
       return;
     }
 
-    // Do not delete courses that already have enrollments.
-    // Archive them instead.
     const enrolled = await Enrollment.exists({
       courseId: course._id,
     });
@@ -169,6 +195,8 @@ export const deleteCourse = async (
       message: "Course deleted successfully",
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to delete course",
@@ -182,9 +210,10 @@ export const getDashboardStats = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const [totalCourses, totalStudents] = await Promise.all([
+    const [totalCourses, totalStudents, totalPurchases] = await Promise.all([
       Course.countDocuments(),
       User.countDocuments({ role: "student" }),
+      Enrollment.countDocuments({ status: "active" }),
     ]);
 
     res.status(200).json({
@@ -192,12 +221,61 @@ export const getDashboardStats = async (
       stats: {
         totalCourses,
         totalStudents,
+        totalPurchases,
       },
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to fetch dashboard stats",
+    });
+  }
+};
+
+// GET STUDENT EMAIL LISTS FOR ADMIN
+export const getStudentEmailLists = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    // Students who have ever purchased at least one course
+    const purchasedUserIds = await Enrollment.distinct("userId");
+
+    const [purchasedStudents, notPurchasedStudents] = await Promise.all([
+      User.find({
+        _id: { $in: purchasedUserIds },
+        role: "student",
+      })
+        .select("name email createdAt")
+        .sort({ createdAt: -1 })
+        .lean(),
+
+      User.find({
+        role: "student",
+        _id: { $nin: purchasedUserIds },
+      })
+        .select("name email createdAt")
+        .sort({ createdAt: -1 })
+        .lean(),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      purchasedStudents,
+      notPurchasedStudents,
+      counts: {
+        purchased: purchasedStudents.length,
+        notPurchased: notPurchasedStudents.length,
+      },
+    });
+  } catch (error) {
+    console.error("Student email lists error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch student email lists",
     });
   }
 };

@@ -7,12 +7,18 @@ import Lesson from "../models/Lesson.js";
 import Enrollment from "../models/Enrollment.js";
 import cloudinary from "../config/cloudinary.js";
 
+const promptsSchema = z
+  .array(z.string().trim().min(1).max(10000))
+  .max(30)
+  .default([]);
+
 const lessonSchema = z.object({
   title: z.string().trim().min(2).max(150),
   description: z.string().max(2000).default(""),
   videoPublicId: z.string().startsWith("course-platform/lessons/"),
   order: z.number().int().min(1),
   isPreview: z.boolean().default(false),
+  prompts: promptsSchema,
 });
 
 // CREATE LESSON
@@ -74,17 +80,15 @@ export const createLesson = async (
       lesson: {
         id: lesson._id,
         title: lesson.title,
+        description: lesson.description,
         duration: lesson.duration,
         order: lesson.order,
         isPreview: lesson.isPreview,
+        prompts: lesson.prompts,
       },
     });
   } catch (error: any) {
-    console.error("========== CREATE LESSON ERROR ==========");
-    console.error("Error message:", error.message);
-    console.error("Error code:", error.code);
-    console.error("Full error:", error);
-    console.error("==========================================");
+    console.error("CREATE LESSON ERROR:", error);
 
     res.status(error.code === 11000 ? 409 : 500).json({
       success: false,
@@ -92,7 +96,6 @@ export const createLesson = async (
         error.code === 11000
           ? "Lesson order already exists"
           : "Failed to create lesson",
-      error: error.message,
     });
   }
 };
@@ -122,11 +125,13 @@ export const getModuleLessons = async (
       .select("-videoPublicId")
       .sort({ order: 1 });
 
-    res.json({
+    res.status(200).json({
       success: true,
       lessons,
     });
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to fetch lessons",
@@ -211,7 +216,9 @@ export const playLesson = async (
       format: "mp4",
     });
 
-    res.json({
+    res.setHeader("Cache-Control", "private, no-store");
+
+    res.status(200).json({
       success: true,
       videoUrl,
       duration: lesson.duration,
@@ -222,6 +229,92 @@ export const playLesson = async (
     res.status(500).json({
       success: false,
       message: "Unable to play lesson",
+    });
+  }
+};
+
+// UPDATE LESSON
+export const updateLesson = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { lessonId } = req.params;
+
+    const updateSchema = z
+      .object({
+        title: z.string().trim().min(2).max(150).optional(),
+        description: z.string().max(2000).optional(),
+        order: z.number().int().min(1).optional(),
+        isPreview: z.boolean().optional(),
+        prompts: promptsSchema.optional(),
+      })
+      .strict();
+
+    const result = updateSchema.safeParse(req.body);
+
+    if (!result.success) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid lesson details",
+        errors: result.error.flatten(),
+      });
+      return;
+    }
+
+    const lesson = await Lesson.findById(lessonId);
+
+    if (!lesson) {
+      res.status(404).json({
+        success: false,
+        message: "Lesson not found",
+      });
+      return;
+    }
+
+    // Prevent duplicate lesson order in the same module.
+    if (result.data.order !== undefined) {
+      const existingOrder = await Lesson.exists({
+        _id: { $ne: lesson._id },
+        moduleId: lesson.moduleId,
+        order: result.data.order,
+      });
+
+      if (existingOrder) {
+        res.status(409).json({
+          success: false,
+          message: "Another lesson already uses this order",
+        });
+        return;
+      }
+    }
+
+    Object.assign(lesson, result.data);
+
+    await lesson.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Lesson updated successfully",
+      lesson: {
+        _id: lesson._id,
+        title: lesson.title,
+        description: lesson.description,
+        duration: lesson.duration,
+        order: lesson.order,
+        isPreview: lesson.isPreview,
+        prompts: lesson.prompts,
+      },
+    });
+  } catch (error: any) {
+    console.error("UPDATE LESSON ERROR:", error);
+
+    res.status(error.code === 11000 ? 409 : 500).json({
+      success: false,
+      message:
+        error.code === 11000
+          ? "Lesson order already exists"
+          : "Failed to update lesson",
     });
   }
 };

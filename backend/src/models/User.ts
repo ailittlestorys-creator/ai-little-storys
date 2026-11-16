@@ -4,8 +4,17 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
+  passwordResetTokenHash?: string;
+  passwordResetExpires?: Date;
+  tokenVersion: number;
   role: "student" | "admin";
   isActive: boolean;
+  isEmailVerified: boolean;
+
+  emailVerificationOtpHash?: string;
+  emailVerificationOtpExpires?: Date;
+  emailVerificationOtpAttempts: number;
+  emailVerificationLastSentAt?: Date;
 }
 
 const userSchema = new Schema<IUser>(
@@ -28,6 +37,45 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       select: false,
+    },
+    passwordResetTokenHash: {
+      type: String,
+      select: false,
+    },
+
+    passwordResetExpires: {
+      type: Date,
+      select: false,
+    },
+
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    emailVerificationOtpHash: {
+      type: String,
+      select: false,
+    },
+
+    emailVerificationOtpExpires: {
+      type: Date,
+      select: false,
+    },
+
+    emailVerificationOtpAttempts: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+
+    emailVerificationLastSentAt: {
+      type: Date,
+      select: false,
+    },
+    tokenVersion: {
+      type: Number,
+      default: 0,
     },
 
     role: {

@@ -6,6 +6,7 @@ export interface LearningLesson {
   order: number;
   isPreview: boolean;
   isLocked: boolean;
+  prompts: string[];
 }
 
 export interface LearningModule {

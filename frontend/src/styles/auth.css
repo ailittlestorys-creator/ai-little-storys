@@ -1,0 +1,124 @@
+/* ========================================
+   LOGIN ERROR POPUP
+======================================== */
+
+.login-error-icon {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.login-error-close {
+  width: 100%;
+  min-height: 44px;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.login-error-close:hover {
+  background: #b91c1c;
+}
+
+/* ========================================
+   PAYMENT SUCCESS POPUP
+======================================== */
+
+.payment-success-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.payment-success-button {
+  width: 100%;
+  min-height: 46px;
+  padding: 14px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #16a34a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.payment-success-button:hover {
+  background: #15803d;
+}
+
+/* ========================================
+   FORGOT PASSWORD LINK
+======================================== */
+
+.forgot-password-link {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -8px;
+  margin-bottom: 18px;
+}
+
+.forgot-password-link a {
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgot-password-link a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+======================================== */
+
+@media (max-width: 480px) {
+  .login-error-icon {
+    width: 58px;
+    height: 58px;
+    font-size: 34px;
+  }
+
+  .payment-success-icon {
+    width: 62px;
+    height: 62px;
+    font-size: 36px;
+  }
+
+  .login-error-close,
+  .payment-success-button {
+    min-height: 46px;
+    font-size: 15px;
+  }
+
+  .forgot-password-link {
+    margin-bottom: 15px;
+  }
+}

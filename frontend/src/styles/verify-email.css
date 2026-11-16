@@ -1,0 +1,169 @@
+.verify-email-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 30px 16px;
+}
+
+.verify-email-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+}
+
+.verify-email-icon {
+  display: flex;
+  width: 70px;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #2563eb;
+  font-size: 34px;
+}
+
+.verify-email-card h2 {
+  margin-bottom: 10px;
+  color: #172033;
+}
+
+.verify-email-card > p {
+  margin-bottom: 25px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* Email Address Display */
+
+.verify-email-address {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.verify-email-address label {
+  display: block;
+  margin-bottom: 8px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.verify-email-address p {
+  margin: 0;
+  padding: 13px 14px;
+  overflow-wrap: anywhere;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* OTP Input */
+
+.verify-email-card > label {
+  display: block;
+  margin: 16px 0 8px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.verify-email-card input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.verify-email-card .otp-input {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 6px;
+}
+
+.verify-email-card .otp-input::placeholder {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 3px;
+}
+
+/* Verify Button */
+
+.verify-email-card button[type="submit"] {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 22px;
+}
+
+/* Resend OTP */
+
+.resend-otp-section {
+  min-height: 30px;
+  margin-top: 22px;
+}
+
+.resend-otp-section p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.resend-otp-section strong {
+  color: #2563eb;
+}
+
+.resend-otp-button {
+  padding: 5px;
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resend-otp-button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.resend-otp-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 480px) {
+  .verify-email-container {
+    padding: 20px 14px;
+  }
+
+  .verify-email-card {
+    padding: 24px 20px;
+  }
+
+  .verify-email-card .otp-input {
+    font-size: 21px;
+    letter-spacing: 5px;
+  }
+
+  .verify-email-card .otp-input::placeholder {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+}
+
+@media (max-width: 350px) {
+  .verify-email-card {
+    padding: 22px 15px;
+  }
+
+  .verify-email-card .otp-input {
+    font-size: 19px;
+    letter-spacing: 4px;
+  }
+}

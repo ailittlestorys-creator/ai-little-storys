@@ -19,8 +19,6 @@ function CourseCard({ course }: Props) {
 
         <h3>{course.title}</h3>
 
-        <p>{course.description}</p>
-
         <div className="course-info">
           <span>
             <BookOpen size={16} />
