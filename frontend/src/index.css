@@ -1012,7 +1012,12 @@ button {
   }
 
   .course-card img {
-    height: 200px;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+    object-fit: contain;
+    background: #f1f5f9;
   }
 
   .auth-container {
