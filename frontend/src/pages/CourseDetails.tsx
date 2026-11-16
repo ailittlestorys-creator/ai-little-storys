@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import BuyNowButton from "../components/BuyNowButton";
 import {
   BookOpen,
-  Clock,
   PlayCircle,
   Lock,
   Globe,
@@ -20,19 +19,6 @@ import type {
 } from "../types/studentCourse";
 
 import "../styles/course-details.css";
-
-const formatDuration = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-
-  if (minutes < 60) return `${minutes} min`;
-
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-
-  return remainingMinutes
-    ? `${hours} hr ${remainingMinutes} min`
-    : `${hours} hr`;
-};
 
 type MyCoursesResponse = {
   courses?: Array<{
@@ -151,11 +137,6 @@ export default function CourseDetails() {
               <BookOpen size={17} />
               {stats.totalLessons} Lessons
             </span>
-
-            <span>
-              <Clock size={17} />
-              {formatDuration(stats.totalDuration)}
-            </span>
           </div>
         </div>
 
@@ -206,8 +187,7 @@ export default function CourseDetails() {
         <h2>Course Curriculum</h2>
 
         <p className="curriculum-summary">
-          {stats.totalModules} Modules · {stats.totalLessons} Lessons ·{" "}
-          {formatDuration(stats.totalDuration)}
+          {stats.totalModules} Modules · {stats.totalLessons} Lessons
         </p>
 
         {curriculum.length === 0 ? (
@@ -254,10 +234,6 @@ export default function CourseDetails() {
                                 Free Preview
                               </span>
                             )}
-
-                            <small>
-                              {formatDuration(lesson.duration || 0)}
-                            </small>
                           </div>
                         </div>
                       ))}
