@@ -2,8 +2,8 @@ import { Send, Camera, Mail, ArrowUpRight } from "lucide-react";
 import "../styles/contact.css";
 
 const socialLinks = {
-  telegram: "https://t.me/YOUR_TELEGRAM",
-  instagram: "https://www.instagram.com/YOUR_INSTAGRAM/",
+  telegram: "https://t.me/ailittlestorys_support",
+  instagram: "https://www.instagram.com/ai_little_storys_support/",
 };
 
 function Contact() {
@@ -30,7 +30,8 @@ function Contact() {
 
           <h2>Telegram</h2>
           <p>
-            Join our Telegram community for updates, announcements and support.
+            contact us on Telegram for quick support and updates. Our team is
+            ready to assist you with any inquiries or concerns you may have.
           </p>
 
           <a
@@ -39,7 +40,7 @@ function Contact() {
             rel="noopener noreferrer"
             className="contact-button telegram-button"
           >
-            Connect on Telegram
+            Telegram link
             <ArrowUpRight size={18} />
           </a>
         </div>
@@ -50,7 +51,7 @@ function Contact() {
           </div>
 
           <h2>Instagram</h2>
-          <p>Follow us on Instagram for latest updates and learning content.</p>
+          <p>you can contact us on Instagram </p>
 
           <a
             href={socialLinks.instagram}
@@ -58,7 +59,7 @@ function Contact() {
             rel="noopener noreferrer"
             className="contact-button instagram-button"
           >
-            Follow on Instagram
+            Instagram link
             <ArrowUpRight size={18} />
           </a>
         </div>
