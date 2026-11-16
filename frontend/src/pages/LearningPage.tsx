@@ -179,8 +179,11 @@ export default function LearningPage() {
                 key={videoUrl}
                 src={videoUrl}
                 controls
+                controlsList="nodownload noplaybackrate"
+                disablePictureInPicture
                 playsInline
                 preload="metadata"
+                onContextMenu={(e) => e.preventDefault()}
               />
             ) : (
               <div className="video-message">
